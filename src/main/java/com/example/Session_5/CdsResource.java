@@ -15,7 +15,7 @@ public interface CdsResource {
     CdsDto create(@RequestBody CdsDto dto);
 
     @PutMapping("/{titulo}")
-    CdsDto update(@PathVariable String titulo);
+    CdsDto update(@PathVariable String titulo, @RequestBody CdsDto dto);
 
     @DeleteMapping("/{titulo}")
     void delete(@PathVariable String titulo);
