@@ -73,14 +73,14 @@ public class CdsService {
         return convertToDto(existente);
     }
 
-    public String getGeneroByAutor(String autor){
+    public CdsDto getGeneroByAutor(String autor){
         List<Cds> cdsList = cdsRepository.findByAutor(autor);
-
         if (cdsList.isEmpty()) {
             throw new RuntimeException("No se encontró ningún CD del autor: " + autor);
         }
 
-        return cdsList.get(0).getGenero();
+        // Retorna el DTO del primer CD encontrado
+        return convertToDto(cdsList.get(0));
     }
 
     private CdsDto convertToDto(Cds cd) {
