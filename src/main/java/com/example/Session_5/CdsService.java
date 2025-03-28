@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +51,38 @@ public class CdsService {
         cdsRepository.deleteById(titulo);
     }
 
+    public CdsDto patchCds(String titulo, Map<String, Object> updates) {
+        // buscar cd en BBDD
+        Cds existente = cdsRepository.findById(titulo)
+                .orElseThrow(() -> new RuntimeException("CD con título: " + titulo + " no encontrado."));
+
+        // para cada posible campo, verificamos si viene en el map 'updates'
+        if (updates.containsKey("autor")){
+            existente.setAutor((String) updates.get("autor"));
+        }
+        if (updates.containsKey("genero")) {
+            existente.setGenero((String) updates.get("genero"));
+        }
+        if (updates.containsKey("prestamo")) {
+            existente.setPrestamo((String) updates.get("prestamo"));
+        }
+
+        // guardamos el CD actualizado
+        existente = cdsRepository.save(existente);
+
+        return convertToDto(existente);
+    }
+
+    public String getGeneroByAutor(String autor){
+        List<Cds> cdsList = cdsRepository.findByAutor(autor);
+
+        if (cdsList.isEmpty()) {
+            throw new RuntimeException("No se encontró ningún CD del autor: " + autor);
+        }
+
+        return cdsList.get(0).getGenero();
+    }
+
     private CdsDto convertToDto(Cds cd) {
         CdsDto dto = new CdsDto();
         dto.setTitulo(cd.getTitulo());
@@ -67,4 +100,5 @@ public class CdsService {
         cd.setPrestamo(dto.getPrestamo());
         return cd;
     }
+
 }

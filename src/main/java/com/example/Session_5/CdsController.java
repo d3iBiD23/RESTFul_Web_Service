@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v0/cds")
@@ -27,6 +28,11 @@ public class CdsController implements CdsResource{
         return cdsService.getCdsByTitulo(titulo);
     }
 
+    @GetMapping("/genero")
+    public String getGeneroByAutor(@RequestParam String autor) {
+        return cdsService.getGeneroByAutor(autor);
+    }
+
     @Override
     @PostMapping
     public CdsDto create(@RequestBody CdsDto dto) {
@@ -43,5 +49,11 @@ public class CdsController implements CdsResource{
     @DeleteMapping("/{titulo}")
     public void delete(@PathVariable String titulo) {
         cdsService.deleteCds(titulo);
+    }
+
+    @PatchMapping("/{titulo}")
+    @Override
+    public CdsDto patchCds(String titulo, Map<String, Object> updates) {
+        return cdsService.patchCds(titulo, updates);
     }
 }
