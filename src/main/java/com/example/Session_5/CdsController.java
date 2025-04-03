@@ -53,8 +53,8 @@ public class CdsController implements CdsResource{
         cdsService.deleteCds(titulo);
     }
 
-    @PatchMapping("/{titulo}")
     @Override
+    @PatchMapping("/{titulo}")
     public CdsDto patchCds(String titulo, Map<String, Object> updates) {
         return cdsService.patchCds(titulo, updates);
     }
